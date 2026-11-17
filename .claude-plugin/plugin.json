@@ -1,0 +1,10 @@
+{
+  "name": "groundbreaker",
+  "description": "Guided project kickoff: interviews you, then writes spec, kickoff prompt, architecture, design, quality constraints, CLAUDE.md and plan, and vets the right skills.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": { "name": "Momkay", "url": "https://github.com/Momkay" },
+  "homepage": "https://github.com/Momkay/groundbreaker",
+  "repository": "https://github.com/Momkay/groundbreaker",
+  "keywords": ["project-setup", "kickoff", "spec", "architecture", "security", "skills"]
+}

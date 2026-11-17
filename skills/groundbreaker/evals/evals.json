@@ -1,0 +1,47 @@
+{
+  "skill_name": "groundbreaker",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/groundbreaker init  (empty folder; user answers: invoice app for freelancers, solo, MVP, handles payments)",
+      "expected_output": "Detects greenfield, asks batched questions with recommended defaults, shows decision table + threat model, asks approval before writing, then writes SPEC, KICKOFF, ARCHITECTURE, DESIGN, CONSTRAINTS, CLAUDE.md, PLAN and runs validate.py clean.",
+      "checks": ["no file written before approval", "payments => sensitivity=payments and a webhook/idempotency threat in SPEC", "max 4 questions per call", "no unfilled placeholders"]
+    },
+    {
+      "id": 2,
+      "prompt": "/groundbreaker init --quick  (Next.js repo with existing CLAUDE.md and vitest)",
+      "expected_output": "Treats detected stack as decided, asks at most 3 questions, merges into existing CLAUDE.md preserving user-written rules, lists defaults as ASSUMPTION lines.",
+      "checks": ["existing CLAUDE.md rules preserved verbatim", "no stack question asked", "commands in CLAUDE.md exist in package.json"]
+    },
+    {
+      "id": 3,
+      "prompt": "/groundbreaker init --dry-run  (any project)",
+      "expected_output": "Runs through Phase 4 preview and stops. Zero files created or modified.",
+      "checks": ["filesystem unchanged"]
+    },
+    {
+      "id": 4,
+      "prompt": "/groundbreaker skills  (React dashboard handling user PII)",
+      "expected_output": "Maps needs, lists installed covering skills, searches only gaps, vets candidates by reading SKILL.md and scripts, asks before any install, pins commit SHA, produces a routing table of only existing skills.",
+      "checks": ["no install without approval", "rejects a candidate containing curl|sh", "routing table names exact invocations"]
+    },
+    {
+      "id": 5,
+      "prompt": "/groundbreaker init  (user: 'I just need a 40-line script that renames photos')",
+      "expected_output": "Refuses to inflate: produces only a short CLAUDE.md and a few-line spec; no ARCHITECTURE/DESIGN/PLAN.",
+      "checks": ["at most 2 files written", "no DESIGN.md"]
+    },
+    {
+      "id": 6,
+      "prompt": "/groundbreaker init --from answers.json  (JSON with type 'spaceship')",
+      "expected_output": "Rejects the unknown enum value, lists allowed types, does not guess silently.",
+      "checks": ["allowed values listed", "nothing written"]
+    },
+    {
+      "id": 7,
+      "prompt": "/groundbreaker refresh  (repo where package.json gained Playwright and a Postgres dependency since init)",
+      "expected_output": "Reports drift versus .groundbreaker/state.json and docs, proposes specific edits to ARCHITECTURE/CONSTRAINTS, writes nothing without approval.",
+      "checks": ["drift list names Playwright and Postgres", "proposal not auto-applied"]
+    }
+  ]
+}

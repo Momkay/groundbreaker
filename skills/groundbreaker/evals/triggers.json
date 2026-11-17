@@ -1,0 +1,17 @@
+{
+  "skill_name": "groundbreaker",
+  "should_trigger": [
+    "/groundbreaker init",
+    "I'm starting a new project, help me set it up properly",
+    "write me the complete prompt for this project before we start coding",
+    "what architecture, security and testing setup does a booking app need?",
+    "which skills should I use for this project?"
+  ],
+  "should_not_trigger": [
+    "fix the failing test in auth.test.ts",
+    "add a dark mode toggle to the navbar",
+    "explain what this regex does",
+    "write a commit message for my staged changes",
+    "upgrade lodash to the latest version"
+  ]
+}
