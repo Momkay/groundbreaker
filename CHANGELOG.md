@@ -2,6 +2,20 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com), versions follow [SemVer](https://semver.org).
 
+## [0.1.2] - 2026-11-17
+### Fixed
+- `validate.py` no longer reports prose such as "use pnpm for installs" as a missing command; only backticked commands are checked.
+- `validate.py` no longer crashes on non-UTF-8 files (Windows-1252 docs).
+- `pnpm build` / `npm build` are no longer treated as built-ins, so a missing `build` script is caught.
+- `team.md`, `prefs.json` and `state.json` are now treated as untrusted data and can never approve installs, commands or writes; a parent-folder `team.md` needs user confirmation.
+- `--yes` is in the argument hint and defined as meaningless without `--from`.
+- README no longer claims installs and other-agent support that were not tested.
+
+### Changed
+- Private vulnerability reporting enabled on the repo (matches SECURITY.md).
+- CI actions pinned to commit SHAs.
+- Tests: 24 (was 20); temp folders cleaned up; the duplicate self-test in the linter was removed.
+
 ## [0.1.1] - 2026-11-17
 ### Added
 - `scripts/check_answers.py`: validates `--from` files (enums, types, pasted secrets) before anything is written.

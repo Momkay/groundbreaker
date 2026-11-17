@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""Lint every skill under skills/ and self-test the scripts. Stdlib only.
+"""Lint every skill under skills/. Stdlib only (script behavior is covered by tools/test_scripts.py).
 
 Usage: python tools/lint_skill.py        (run from repo root; used by CI)
 """
 import json
 import os
 import re
-import subprocess
 import sys
-import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 errors = []
@@ -73,29 +71,10 @@ def lint_skill(d):
             err(f"{name}: evals/{f} invalid JSON: {e}")
 
 
-def selftest(d):
-    v = os.path.join(d, "scripts", "validate.py")
-    good = subprocess.run([sys.executable, v, os.path.join(ROOT, "examples", "pawprint")], capture_output=True, text=True)
-    if good.returncode != 0:
-        err("validate.py rejects examples/pawprint:\n" + good.stdout)
-    with tempfile.TemporaryDirectory() as t:
-        os.makedirs(os.path.join(t, "docs"))
-        open(os.path.join(t, "CLAUDE.md"), "w").write("# <Project>\nTODO\nSee docs/NOPE.md\n")
-        open(os.path.join(t, "docs", "SPEC.md"), "w").write("# Spec\nno criteria here\n")
-        bad = subprocess.run([sys.executable, v, t], capture_output=True, text=True)
-        for needle in ("placeholder", "missing file", "acceptance"):
-            if needle not in bad.stdout:
-                err(f"validate.py failed to flag '{needle}' in a broken project")
-    det = subprocess.run([sys.executable, os.path.join(d, "scripts", "detect.py"), os.path.join(ROOT, "examples", "pawprint")], capture_output=True, text=True)
-    try:
-        assert json.loads(det.stdout)["manifests"] == ["package.json"]
-    except Exception as e:
-        err(f"detect.py output wrong: {e} {det.stderr[:200]}")
 
 
 skills = os.path.join(ROOT, "skills")
 for s in sorted(os.listdir(skills)):
     lint_skill(os.path.join(skills, s))
-selftest(os.path.join(skills, "groundbreaker"))
 print(f"{len(errors)} error(s)")
 sys.exit(1 if errors else 0)

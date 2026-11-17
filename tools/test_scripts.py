@@ -21,8 +21,20 @@ def run(script, *args):
     return p.returncode, p.stdout
 
 
+_TMP = None
+
+
+def setUpModule():
+    global _TMP
+    _TMP = tempfile.TemporaryDirectory()
+
+
+def tearDownModule():
+    _TMP.cleanup()
+
+
 def make(tree):
-    d = tempfile.mkdtemp()
+    d = tempfile.mkdtemp(dir=_TMP.name)
     for path, body in tree.items():
         full = os.path.join(d, *path.split("/"))
         os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -108,6 +120,28 @@ class Validate(unittest.TestCase):
         code, out = self.v({"CLAUDE.md": "# P\n", "CONSTRAINTS.md": "| a | b |\n|---|---|\n| x |  |\n"})
         self.assertEqual(code, 1)
         self.assertIn("empty table cell", out)
+
+    def test_prose_mentioning_pnpm_is_not_a_command(self):
+        tree = {"CLAUDE.md": "# P\nUse pnpm for installs and bun to run scripts.\n- `pnpm test`\n", "package.json": {"scripts": {"test": "x"}}}
+        code, out = self.v(tree)
+        self.assertEqual(code, 0, out)
+
+    def test_build_is_not_a_builtin(self):
+        tree = {"CLAUDE.md": "# P\n- `pnpm build`\n", "package.json": {"scripts": {"test": "x"}}}
+        code, out = self.v(tree)
+        self.assertEqual(code, 1)
+        self.assertIn("`build`", out)
+
+    def test_non_utf8_file_does_not_crash(self):
+        d = make({"x": ""})
+        with open(os.path.join(d, "CLAUDE.md"), "wb") as f:
+            f.write(b"# P\nCaf\xe9 \x93quoted\x94\n")
+        code, out = run("validate.py", d)
+        self.assertEqual(code, 0, out)
+
+    def test_shipped_example_validates(self):
+        code, out = run("validate.py", os.path.join(ROOT, "examples", "pawprint"))
+        self.assertEqual(code, 0, out)
 
     def test_long_claude_md_warns(self):
         code, out = self.v({"CLAUDE.md": "# P\n" + "line\n" * 130})

@@ -4,7 +4,7 @@
 
 `/groundbreaker init` interviews you, decides the hard calls (stack, architecture, security, testing, UI), finds and vets the right skills, and writes the files your AI agent needs: a spec, a copy-paste kickoff prompt, architecture, design system, measurable quality constraints, `CLAUDE.md` and a vertical-slice plan. Then it validates its own output.
 
-An Agent Skill for [Claude Code](https://claude.com/claude-code). The skill format follows the open Agent Skills standard, so it can also be used by other compatible agents.
+An Agent Skill for [Claude Code](https://claude.com/claude-code). It is written in the open Agent Skills format (`SKILL.md` plus references and scripts), but it has only been tried in Claude Code so far.
 
 ## Why
 
@@ -20,17 +20,17 @@ Every new project starts the same loop: what prompt, what architecture, what abo
 
 ## Install
 
-Pick one.
+Pick one. Only the manual copy has been tested so far; the other two are untested, so please open an issue if they fail.
 
 ```bash
-# any agent that supports skills
+# skills CLI (untested)
 npx skills add Momkay/groundbreaker --skill groundbreaker
 
-# Claude Code plugin marketplace
+# Claude Code plugin marketplace (untested)
 /plugin marketplace add Momkay/groundbreaker
 /plugin install groundbreaker@groundbreaker
 
-# manual: copy the folder
+# manual: copy the folder (tested)
 cp -r skills/groundbreaker ~/.claude/skills/groundbreaker      # all projects
 cp -r skills/groundbreaker .claude/skills/groundbreaker        # this repo only
 ```
@@ -92,7 +92,7 @@ See a complete sample in [`examples/pawprint`](examples/pawprint).
 | Environment | Status |
 |---|---|
 | Claude Code (CLI, desktop, IDE) | Primary target |
-| Other Agent Skills-compatible agents | Core flow works; questions fall back to numbered plain text |
+| Other Agent Skills-compatible agents | Untested. The skill is written to fall back to numbered plain-text questions when `AskUserQuestion` is missing |
 | Without Python | Works; detection and validation are done by hand using the same checklist |
 | Offline | Works; skill discovery is skipped and version-sensitive facts are flagged |
 

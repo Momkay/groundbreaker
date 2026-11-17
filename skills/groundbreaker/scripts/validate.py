@@ -12,13 +12,14 @@ import sys
 FILES = ["CLAUDE.md", "AGENTS.md", "KICKOFF.md", "CONSTRAINTS.md", "docs/SPEC.md", "docs/ARCHITECTURE.md", "docs/DESIGN.md", "docs/PLAN.md"]
 # (?<!\w) so generics like Array<Foo> are not mistaken for placeholders
 PLACEHOLDER = re.compile(r"\bTODO\b|\bTBD\b|\{\{|(?<!\w)<(?:Project|project|name|your[- ][\w -]+|[A-Z][A-Za-z ]{2,30})>")
-RUN = re.compile(r"\b(?:npm|pnpm|yarn|bun) (?:run )?([\w:.-]+)")
-BUILTIN = {"install", "i", "ci", "test", "start", "init", "add", "audit", "exec", "dlx", "create", "update", "publish", "pack", "link", "outdated", "build"}
+# only commands in backticks, so prose like "use pnpm for installs" is not parsed as a command
+RUN = re.compile(r"`(?:npm|pnpm|yarn|bun) (?:run )?([\w:.-]+)")
+BUILTIN = {"install", "i", "ci", "test", "start", "init", "add", "audit", "exec", "dlx", "create", "update", "publish", "pack", "link", "outdated"}
 
 
 def read(p):
     try:
-        with open(p, encoding="utf-8") as f:
+        with open(p, encoding="utf-8", errors="replace") as f:  # Windows editors still write cp1252
             return f.read()
     except OSError:
         return None
