@@ -6,7 +6,7 @@
       "name": "groundbreaker",
       "source": "./",
       "description": "Guided project kickoff: spec, kickoff prompt, architecture, design, quality constraints, CLAUDE.md, plan, and vetted skills.",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ]
 }

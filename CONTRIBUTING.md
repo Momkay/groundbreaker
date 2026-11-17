@@ -1,6 +1,6 @@
 # Contributing
 
-1. Run `python tools/lint_skill.py` before every PR; CI runs the same check.
+1. Run `python tools/lint_skill.py` and `python tools/test_scripts.py` before every PR; CI runs the same checks.
 2. Keep `SKILL.md` under 500 lines. Detail goes in `references/`, linked directly from `SKILL.md` (one level deep). Reference files over 100 lines start with a `Contents` line.
 3. Be concise: Claude is already smart. Every line must earn its tokens; generic advice gets cut.
 4. Description is third person and says what the skill does and when to use it.

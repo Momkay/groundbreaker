@@ -67,7 +67,7 @@ Delegate to `taste-skill:design-taste-frontend` (marketing/public pages) or `age
 ```
 # <Project>
 <one-line description>
-## Commands     install / dev / build / test / lint / typecheck (exact, verified)
+## Commands     install / dev / build / test / lint / typecheck. Brownfield: run them to verify. Greenfield: they don't exist yet, so say "created in slice 1" and make slice 1 create them
 ## Structure    top-level dirs, one line each
 ## Conventions  naming, error handling, imports, commit style (only non-obvious ones)
 ## Hard rules   never do X (secrets, destructive ops, weakening constraints)

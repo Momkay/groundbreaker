@@ -111,7 +111,8 @@ It composes with other skills (spec, plan, security, TDD, design) when installed
 ## Development
 
 ```bash
-python tools/lint_skill.py     # frontmatter, size, links, orphan references, script self-tests
+python tools/lint_skill.py     # frontmatter, size, links, orphan references
+python tools/test_scripts.py    # behavior tests for the helper scripts
 ```
 
 `skills/groundbreaker/evals/` holds end-to-end scenarios and trigger tests. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).

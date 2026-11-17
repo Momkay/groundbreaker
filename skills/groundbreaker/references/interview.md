@@ -50,7 +50,15 @@ Ask: R1 idea + type, then one combined question (ambition, stack, data sensitivi
   "ui": {"direction": "string", "references": ["url"], "theme": "both"}
 }
 ```
-Unknown/missing keys fall back to defaults and are logged as assumptions. Validate enum values; reject unknown types with the allowed list.
+Allowed values:
+- `type`: web-app, marketing-site, api-backend, cli, library, mobile, ai-llm-app, other
+- `team`: solo, team · `ambition`: prototype, mvp, production
+- `sensitivity`: none, pii, payments, health-legal · `auth`: none, simple, roles, sso
+- `testing`: smoke, pyramid, tdd · `a11y`: basic, aa · `ui.theme`: light, dark, both
+
+Unknown/missing keys fall back to defaults and are logged as assumptions. A value outside the lists above is an error: stop, print the allowed list, write nothing.
+
+No `ui` object for a project that has a UI: skip `docs/DESIGN.md` and add `ASSUMPTION: new UI follows the existing look and components` (brownfield) or ask for a direction in the preview (greenfield).
 
 ## Plain-text fallback
 No `AskUserQuestion`: send one numbered message per round, defaults marked `[default]`, accept answers like `1a 2b 3 default`.

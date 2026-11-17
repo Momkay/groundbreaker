@@ -6,7 +6,7 @@ license: MIT
 compatibility: Works best in Claude Code (uses AskUserQuestion, Skill, Agent, WebSearch). Python 3.8+ optional for scripts; every step has a manual fallback.
 allowed-tools: Read, Glob, Grep, AskUserQuestion
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # groundbreaker
@@ -20,7 +20,7 @@ Args: `$ARGUMENTS` (empty = `init`)
 | `init` | Full kickoff, Phases 0-6 |
 | `init --quick` | 3 questions, defaults for the rest (listed as assumptions) |
 | `init --dry-run` | Run everything up to Phase 4, write nothing |
-| `init --from FILE` | Non-interactive: answers from JSON (schema in `references/interview.md`) |
+| `init --from FILE` | Non-interactive: answers from JSON (schema in `references/interview.md`). Previews only; add `--yes` to also write |
 | `skills` | Phase 3 only: discover, vet, wire skills for this project |
 | `refresh` | Re-detect repo, diff against `.groundbreaker/state.json` + docs, report drift, propose edits |
 | `validate` | Phase 6 checks only |
@@ -45,7 +45,7 @@ Args: `$ARGUMENTS` (empty = `init`)
 
 ## Phase 1 - Interview
 
-Follow `references/interview.md`: adaptive rounds (what/who -> shape/constraints -> quality bar -> UI), at most 2 sharpening follow-ups, then stop. `--quick` and `--from` shortcuts, plain-text fallback when `AskUserQuestion` is unavailable.
+Follow `references/interview.md`: adaptive rounds (what/who -> shape/constraints -> quality bar -> UI), at most 2 sharpening follow-ups, then stop. `--quick` and `--from` shortcuts, plain-text fallback when `AskUserQuestion` is unavailable. For `--from`, run `python scripts/check_answers.py FILE` first; on any error print it and stop (no Python: check against the allowed values in `references/interview.md` by hand).
 
 ## Phase 2 - Decide
 
@@ -57,7 +57,7 @@ Follow `references/skill-vetting.md`. Summary: map needs to categories -> mark w
 
 ## Phase 4 - Preview & approve
 
-One compact message: file tree (new / merged / untouched), decision table, assumptions, open questions. Ask once: approve all / adjust / cancel. `--dry-run` stops here. Adjustments re-enter only the affected phase.
+One compact message: file tree (new / merged / untouched), decision table, assumptions, open questions. Ask once: approve all / adjust / cancel. `--dry-run` stops here. `--from` also stops here unless `--yes` was given (there is no one to approve; `--yes` is the approval). Adjustments re-enter only the affected phase.
 
 ## Phase 5 - Generate
 

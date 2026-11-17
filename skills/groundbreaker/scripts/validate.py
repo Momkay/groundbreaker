@@ -10,7 +10,8 @@ import re
 import sys
 
 FILES = ["CLAUDE.md", "AGENTS.md", "KICKOFF.md", "CONSTRAINTS.md", "docs/SPEC.md", "docs/ARCHITECTURE.md", "docs/DESIGN.md", "docs/PLAN.md"]
-PLACEHOLDER = re.compile(r"\bTODO\b|\bTBD\b|\{\{|<(?:Project|project|name|your[- ][\w -]+|[A-Z][A-Za-z ]{2,30})>")
+# (?<!\w) so generics like Array<Foo> are not mistaken for placeholders
+PLACEHOLDER = re.compile(r"\bTODO\b|\bTBD\b|\{\{|(?<!\w)<(?:Project|project|name|your[- ][\w -]+|[A-Z][A-Za-z ]{2,30})>")
 RUN = re.compile(r"\b(?:npm|pnpm|yarn|bun) (?:run )?([\w:.-]+)")
 BUILTIN = {"install", "i", "ci", "test", "start", "init", "add", "audit", "exec", "dlx", "create", "update", "publish", "pack", "link", "outdated", "build"}
 
